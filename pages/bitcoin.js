@@ -1,12 +1,18 @@
 import { withScreenSize } from '@vx/responsive'
+import { LinearGradient } from '@vx/gradient'
 
 function Background({width, height}) {
     return (
         <svg width={width} height={height}>
+            <LinearGradient id='fill' vertical={false}>
+                <stop stopColor="#A943E4" offset="0%" />
+                <stop stopColor="#F55989" offset="50%" />
+                <stop stopColor="#FFAF84" offset="100%" />
+            </LinearGradient>
             <rect 
                 width={width}
                 height={height}
-                fill="steelblue"
+                fill="url(#fill)"
             />
         </svg>
     )
