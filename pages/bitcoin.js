@@ -30,16 +30,30 @@ class App extends React.Component {
         const { screenWidth, screenHeight } = this.props
         const { data } = this.state
         return (
-            <div>
+            <div className="app">
                 <Background width={screenWidth} height={screenHeight} />
+                <div className="chartarea">
+                    <div className="chart">
+                        Hello I am here
+                    </div>
+                </div>
                 <style jsx>{`
-                    .app {
+                    .app, .chartarea {
                         display: flex;
                         position: absolute;
                         top: 0;
                         left: 0;
                         right: 0;
                         bottom: 0; 
+                        justify-content: center;
+                        align-items: center;
+                        font-family: arial
+                    }
+                    .chart {
+                        width: 600px;
+                        height: 400px;
+                        background-color:white;
+                        border-radius: 8px;
                     }
                 `}</style>
             </div>
