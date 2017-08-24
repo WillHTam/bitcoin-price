@@ -1,5 +1,6 @@
 import { withScreenSize } from '@vx/responsive'
 import { LinearGradient } from '@vx/gradient'
+import Chart from '../components/chart'
 
 function Background({width, height}) {
     return (
@@ -39,44 +40,70 @@ class App extends React.Component {
     render() {
         const { screenWidth, screenHeight } = this.props
         const { data } = this.state
-        console.log(data)
-        return (
-            <div className="app">
-                <Background width={screenWidth} height={screenHeight} />
-                <div className="chartarea">
-                    <div className="chart">
-                        Hello I am here
-                    </div>
-                    <p className="disclaimer">{data.disclaimer}</p>
+
+        if (!data.bpi) return <div>Loading...</div>
+        const prices = Object.keys(data.bpi).map(k => {
+            return { 
+                time: k, 
+                price: data.bpi[k] 
+            }
+        })
+        const currentPrice = prices[prices.length - 1].price
+
+        console.log('response: ' + data)
+        console.log('prices' + prices)
+        console.log('current price: ' + currentPrice)
+
+        return <div className="app">
+            <Background width={screenWidth} height={screenHeight} />
+            <div className="chartarea">
+              <div className="chart">
+                <div className="title">BTC Price</div>
+                <div className="currentprice">{currentPrice}</div>
+                <div className="container">
+                    <Chart data={data} />
                 </div>
-                <style jsx>{`
-                    .app, .chartarea {
-                        display: flex;
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0; 
-                        justify-content: center;
-                        align-items: center;
-                        font-family: arial;
-                        flex-direction:column;
-                    }
-                    .chart {
-                        width: 600px;
-                        height: 400px;
-                        background-color: #27273F;
-                        color: white;
-                        border-radius: 8px;
-                    }
-                    .disclaimer {
-                        color: white;
-                        opacity: 0.4;
-                        font-size: 11px;
-                    }
-                `}</style>
+              </div>
+              <p className="disclaimer">
+                {data.disclaimer}
+              </p>
             </div>
-        )
+            <style jsx>{`.app,
+              .chartarea {
+                display: flex;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                flex: 1;
+                justify-content: center;
+                align-items: center;
+                font-family: arial;
+                flex-direction: column;
+              }
+              .title, .currentprice {
+                  padding: 15px;
+              }
+              .container {
+                flex: 1;
+                display: flex;
+              }
+              .chart {
+                width: 600px;
+                height: 400px;
+                background-color: #27273f;
+                color: white;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+              }
+              .disclaimer {
+                color: white;
+                opacity: 0.4;
+                font-size: 11px;
+              }`}</style>
+          </div>;
     }
 }
 
