@@ -129,8 +129,8 @@ class App extends React.Component {
                 display: flex
               }
               .chart {
-                width: 600px
-                height: 400px
+                width: 800px
+                height: 500px
                 background-color: #27273f
                 color: white
                 border-radius: 8px

@@ -68,7 +68,7 @@ class Chart extends React.Component {
         </Head>
         <svg ref={s => (this.svg = s)} width={width} height={parentHeight}>
           <AxisBottom top={yScale(minPrice)} data={data} scale={xScale} x={x} numTicks={5} tickLabelComponent={<text fill="#ffffff" fontSize={11} textAnchor="middle" />} hideAxisLine hideTicks />
-          <LinearGradient id="area-fill" from="#4682b4" to="#4682b4" fromOpacity={0.3} toOpacity={0} />
+          <LinearGradient id="area-fill" from="#4682b4" to="#4682b4" fromOpacity={0.4} toOpacity={0} />
           <MaxPrice data={maxPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(maxPrice)} yText={yScale(maxPrice)} />
           <MinPrice data={minPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(minPrice)} yText={yScale(minPrice)} />
           <AreaClosed data={data} yScale={yScale} xScale={xScale} x={x} y={y} fill="url(#area-fill)" stroke="transparent" />
