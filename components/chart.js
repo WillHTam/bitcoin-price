@@ -1,7 +1,10 @@
+import Head from 'next/head'
 import {withParentSize} from '@vx/responsive'
 import { scaleTime, scaleLinear } from '@vx/scale'
-import { LinePath, AreaClosed } from '@vx/shape'
+import { LinePath, AreaClosed, Bar } from '@vx/shape'
 import { LinearGradient } from '@vx/gradient'
+import { AxisBottom } from '@vx/axis'
+import { withTooltip, Tooltip } from '@vx/tooltip'
 
 import formatPrice from "../utils/formatPrice"
 import MaxPrice from './maxprice'
@@ -49,12 +52,18 @@ function Chart({ data, parentWidth, parentHeight }) {
     console.log('Y axis domain: ' + yScale.domain())
 
     return <div>
-        <svg width={width} height={height}>
-            <LinearGradient id="area-fill" from="#4682b4" to="#4682b4" fromOpacity={.3} toOpacity={0}></LinearGradient>
-            <MaxPrice data={maxPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(maxPrice)} yText={yScale(maxPrice)} />
-            <MinPrice data={minPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(minPrice)} yText={yScale(minPrice)} />
-            <AreaClosed data={data} yScale={yScale} xScale={xScale} x={x} y={y} fill="url(#area-fill)" stroke="transparent"/>
-            <LinePath data={data} yScale={yScale} xScale={xScale} x={x} y={y} />
+        <Head>
+          <title>Coin Prices</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
+        <svg width={width} height={parentHeight}>
+          <AxisBottom top={yScale(minPrice)} data={data} scale={xScale} x={x} numTicks={5} tickLabelComponent={<text fill="#ffffff" fontSize={11} textAnchor="middle" />} hideAxisLine hideTicks />
+          <LinearGradient id="area-fill" from="#4682b4" to="#4682b4" fromOpacity={0.3} toOpacity={0} />
+          <MaxPrice data={maxPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(maxPrice)} yText={yScale(maxPrice)} />
+          <MinPrice data={minPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(minPrice)} yText={yScale(minPrice)} />
+          <AreaClosed data={data} yScale={yScale} xScale={xScale} x={x} y={y} fill="url(#area-fill)" stroke="transparent" />
+          <LinePath data={data} yScale={yScale} xScale={xScale} x={x} y={y} />
+          <Bar width={width} height={height} fill="transparent" />
         </svg>
       </div>;
 }
