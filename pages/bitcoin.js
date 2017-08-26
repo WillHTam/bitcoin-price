@@ -7,7 +7,7 @@ function Background({width, height}) {
     return <svg width={width} height={height}>
         <LinearGradient id="fill" vertical={false}>
           <stop stopColor="#2c4e99" offset="0%" />
-          <stop stopColor="#6e89d8" offset="50%" />
+          <stop stopColor="#6e89d8" offset="45%" />
           <stop stopColor="#FFAF84" offset="100%" />
         </LinearGradient>
         <rect width={width} height={height} fill="url(#fill)" />
@@ -60,7 +60,7 @@ class App extends React.Component {
                 <div className="titlebar">
                   <div className="title">
                     <div>BTC Price</div>
-                    <div>
+                    <div className="thirtee">
                       <small>Last 30 Days</small>
                     </div>
                   </div>
@@ -86,8 +86,7 @@ class App extends React.Component {
               </p>
             </div>
             <style jsx>{`.app,
-              .chartarea,
-              .loader {
+              .chartarea {
                 display: flex
                 position: absolute
                 top: 0
@@ -101,6 +100,9 @@ class App extends React.Component {
                 flex-direction: column
               }
               .title {
+              }
+              .thirtee {
+                  color: steelblue
               }
               .prices {
                 align-items: flex-end
