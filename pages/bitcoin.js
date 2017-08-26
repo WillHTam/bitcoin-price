@@ -1,6 +1,7 @@
 import { withScreenSize } from '@vx/responsive'
 import { LinearGradient } from '@vx/gradient'
 import Chart from '../components/chart'
+import formatPrice from '../utils/formatPrice'
 
 function Background({width, height}) {
     return (
@@ -41,27 +42,49 @@ class App extends React.Component {
         const { screenWidth, screenHeight } = this.props
         const { data } = this.state
 
-        if (!data.bpi) return <div>Loading...</div>
+        if (!data.bpi) return <div className="loader"><h2>Loading...</h2></div>
         const prices = Object.keys(data.bpi).map(k => {
             return { 
                 time: k, 
                 price: data.bpi[k] 
             }
         })
+
         const currentPrice = prices[prices.length - 1].price
+        const lastPrice = prices[prices.length - 2].price
+        const diffPrice = currentPrice - lastPrice
+        const hasIncreased = diffPrice > 0
 
         console.log('response: ' + data)
-        console.log('prices' + prices)
+        console.log('prices: ' + prices)
         console.log('current price: ' + currentPrice)
 
         return <div className="app">
             <Background width={screenWidth} height={screenHeight} />
             <div className="chartarea">
               <div className="chart">
-                <div className="title">BTC Price</div>
-                <div className="currentprice">{currentPrice}</div>
+                <div className="titlebar">
+                  <div className="title">
+                    <div>BTC Price</div>
+                    <div>
+                      <small>Last 30 Days</small>
+                    </div>
+                  </div>
+                  <div className="spacer" />
+                  <div className="prices">
+                    <div>
+                      {formatPrice(currentPrice)}
+                    </div>
+                    <div>
+                      <small>
+                        {hasIncreased ? '+' : '-'}{formatPrice(diffPrice)}
+                      </small>
+                    </div>
+                  </div>
+                  <div />
+                </div>
                 <div className="container">
-                    <Chart data={data} />
+                  <Chart data={data} />
                 </div>
               </div>
               <p className="disclaimer">
@@ -69,7 +92,8 @@ class App extends React.Component {
               </p>
             </div>
             <style jsx>{`.app,
-              .chartarea {
+              .chartarea,
+              .loader {
                 display: flex;
                 position: absolute;
                 top: 0;
@@ -82,8 +106,21 @@ class App extends React.Component {
                 font-family: arial;
                 flex-direction: column;
               }
-              .title, .currentprice {
-                  padding: 15px;
+              .title {
+              }
+              .prices {
+                align-items: flex-end;
+                display: flex;
+                flex-direction: column;
+              }
+              .spacer {
+                flex: 1;
+              }
+              .titlebar {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 15px;
               }
               .container {
                 flex: 1;
