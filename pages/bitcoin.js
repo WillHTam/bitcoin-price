@@ -75,7 +75,7 @@ class App extends React.Component {
                     <div>
                       {formatPrice(currentPrice)}
                     </div>
-                    <div>
+                    <div className={hasIncreased ? 'increased' : 'decreased'}>
                       <small>
                         {hasIncreased ? '+' : '-'}{formatPrice(diffPrice)}
                       </small>
@@ -84,7 +84,7 @@ class App extends React.Component {
                   <div />
                 </div>
                 <div className="container">
-                  <Chart data={data} />
+                  <Chart data={prices} />
                 </div>
               </div>
               <p className="disclaimer">
@@ -112,6 +112,12 @@ class App extends React.Component {
                 align-items: flex-end;
                 display: flex;
                 flex-direction: column;
+              }
+              .increased {
+                color: #00f1a1;
+              }
+              .decreased {
+                color: red; 
               }
               .spacer {
                 flex: 1;
