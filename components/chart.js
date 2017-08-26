@@ -1,10 +1,12 @@
 import Head from "next/head"
 import { withParentSize } from "@vx/responsive"
 import { scaleTime, scaleLinear } from "@vx/scale"
-import { LinePath, AreaClosed, Bar } from "@vx/shape"
+import { LinePath, AreaClosed, Bar, Line } from "@vx/shape"
 import { LinearGradient } from "@vx/gradient"
 import { AxisBottom } from "@vx/axis"
 import { withTooltip, Tooltip } from "@vx/tooltip"
+import { localPoint } from '@vx/event'
+import { bisector } from 'd3-array'
 
 import formatPrice from "../utils/formatPrice"
 import MaxPrice from "./maxprice"
@@ -15,7 +17,7 @@ class Chart extends React.Component {
     super(props)
   }
   render() {
-    const { data, parentWidth, parentHeight } = this.props
+    const { data, parentWidth, parentHeight, tooltipLeft, tooltipTop, tooltipData, showTooltip, hideTooltip } = this.props
     const margin = {
       top: 15,
       bottom: 40,
@@ -25,9 +27,11 @@ class Chart extends React.Component {
     const width = parentWidth - margin.left - margin.right
     const height = parentHeight - margin.top - margin.bottom
 
+    
     const x = d => new Date(d.time)
     const y = d => d.price
-
+    const bisectDate = bisector(d => x(d)).left
+    
     const firstPoint = data[0]
     const currentPoint = data[data.length - 1]
 
@@ -65,7 +69,7 @@ class Chart extends React.Component {
             content="initial-scale=1.0, width=device-width"
           />
         </Head>
-        <svg width={width} height={parentHeight}>
+        <svg ref={s => (this.svg = s)} width={width} height={parentHeight}>
           <AxisBottom
             top={yScale(minPrice)}
             data={data}
@@ -113,11 +117,40 @@ class Chart extends React.Component {
             stroke="transparent"
           />
           <LinePath data={data} yScale={yScale} xScale={xScale} x={x} y={y} />
-          <Bar width={width} height={height} fill="transparent" />
+          <Bar
+            data={data}
+            width={width} 
+            height={height} 
+            fill="transparent" 
+            onMouseMove={data => event => {
+                // Convert event coordinates to local coordinates
+                const { x: xPoint} = localPoint(this.svg, event)
+                const x0 = xScale.invert(xPoint)
+                const index = bisectDate(data, x0, 1)
+                const d0 = data[index - 1]
+                const d1 = data[index]
+                const d = x0 - xScale(x(d0)) > xScale(x(d1)) - x0 ? d1 : d0
+                showTooltip({
+                    tooltipLeft: xScale(x(d)),
+                    tooltipTop: yScale(y(d)),
+                    tooltipData: d
+                })
+            }} 
+            onMouseLeave={data => event => hideTooltip()} 
+          />
+          { tooltipData && 
+            <g>
+              <Line 
+                from={{ x: tooltipLeft, y: yScale(y(maxPriceData[0])) }}
+                to={{ x: tooltipLeft, y: yScale(y(minPriceData[0])) }}
+                stroke="#ffffff"
+              />
+            </g> 
+          }
         </svg>
       </div>
     )
   }
 }
 
-export default withParentSize(Chart)
+export default withParentSize(withTooltip(Chart))

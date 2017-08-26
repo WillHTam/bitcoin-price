@@ -4,20 +4,14 @@ import Chart from '../components/chart'
 import formatPrice from '../utils/formatPrice'
 
 function Background({width, height}) {
-    return (
-        <svg width={width} height={height}>
-            <LinearGradient id='fill' vertical={false}>
-                <stop stopColor="#A943E4" offset="0%" />
-                <stop stopColor="#F55989" offset="50%" />
-                <stop stopColor="#FFAF84" offset="100%" />
-            </LinearGradient>
-            <rect 
-                width={width}
-                height={height}
-                fill="url(#fill)"
-            />
-        </svg>
-    )
+    return <svg width={width} height={height}>
+        <LinearGradient id="fill" vertical={false}>
+          <stop stopColor="#2c4e99" offset="0%" />
+          <stop stopColor="#6e89d8" offset="50%" />
+          <stop stopColor="#FFAF84" offset="100%" />
+        </LinearGradient>
+        <rect width={width} height={height} fill="url(#fill)" />
+      </svg>;
 }
 
 class App extends React.Component {
