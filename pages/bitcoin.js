@@ -94,59 +94,59 @@ class App extends React.Component {
             <style jsx>{`.app,
               .chartarea,
               .loader {
-                display: flex;
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                flex: 1;
-                justify-content: center;
-                align-items: center;
-                font-family: arial;
-                flex-direction: column;
+                display: flex
+                position: absolute
+                top: 0
+                left: 0
+                right: 0
+                bottom: 0
+                flex: 1
+                justify-content: center
+                align-items: center
+                font-family: arial
+                flex-direction: column
               }
               .title {
               }
               .prices {
-                align-items: flex-end;
-                display: flex;
-                flex-direction: column;
+                align-items: flex-end
+                display: flex
+                flex-direction: column
               }
               .increased {
-                color: #00f1a1;
+                color: #00f1a1
               }
               .decreased {
-                color: red; 
+                color: red 
               }
               .spacer {
-                flex: 1;
+                flex: 1
               }
               .titlebar {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                padding: 15px;
+                display: flex
+                flex-direction: row
+                align-items: center
+                padding: 15px
               }
               .container {
-                flex: 1;
-                display: flex;
+                flex: 1
+                display: flex
               }
               .chart {
-                width: 600px;
-                height: 400px;
-                background-color: #27273f;
-                color: white;
-                border-radius: 8px;
-                display: flex;
-                flex-direction: column;
+                width: 600px
+                height: 400px
+                background-color: #27273f
+                color: white
+                border-radius: 8px
+                display: flex
+                flex-direction: column
               }
               .disclaimer {
-                color: white;
-                opacity: 0.4;
-                font-size: 11px;
+                color: white
+                opacity: 0.4
+                font-size: 11px
               }`}</style>
-          </div>;
+          </div>
     }
 }
 
