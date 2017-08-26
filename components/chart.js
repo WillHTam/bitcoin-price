@@ -1,6 +1,9 @@
 import {withParentSize} from '@vx/responsive'
 import { scaleTime, scaleLinear } from '@vx/scale'
-import { LinePath } from '@vx/shape'
+import { LinePath, AreaClosed } from '@vx/shape'
+import { LinearGradient } from '@vx/gradient'
+
+import MaxPrice from './maxprice'
 
 function Chart({ data, parentWidth, parentHeight }) {
     const margin = {
@@ -32,9 +35,12 @@ function Chart({ data, parentWidth, parentHeight }) {
 
     return <div>
         <svg width={width} height={height}>
+            <LinearGradient id="area-fill" from="#4682b4" to="#4682b4" fromOpacity={.3} toOpacity={0}></LinearGradient>
+            <MaxPrice data={} yScale={yScale} xScale={xScale} x={x} y={y} label={'label'} yText={0} />
+            <AreaClosed data={data} yScale={yScale} xScale={xScale} x={x} y={y} fill="url(#area-fill)" stroke="transparent"/>
             <LinePath data={data} yScale={yScale} xScale={xScale} x={x} y={y} />
         </svg>
-      </div>
+      </div>;
 }
 
 export default withParentSize(Chart)
