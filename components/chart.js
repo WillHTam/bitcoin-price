@@ -3,7 +3,9 @@ import { scaleTime, scaleLinear } from '@vx/scale'
 import { LinePath, AreaClosed } from '@vx/shape'
 import { LinearGradient } from '@vx/gradient'
 
+import formatPrice from "../utils/formatPrice"
 import MaxPrice from './maxprice'
+import MinPrice from './minprice'
 
 function Chart({ data, parentWidth, parentHeight }) {
     const margin = {
@@ -17,8 +19,21 @@ function Chart({ data, parentWidth, parentHeight }) {
 
     const x = d => new Date(d.time)
     const y = d => d.price
+
+    const firstPoint = data[0]
+    const currentPoint = data[data.length - 1]
+    
     const minPrice = Math.min(...data.map(y))
     const maxPrice = Math.max(...data.map(y))
+    const maxPriceData = [
+        { time: x(firstPoint), price: maxPrice }, 
+        { time: x(currentPoint), price: maxPrice }
+    ]
+    const minPriceData = [
+        { time: x(firstPoint), price: minPrice}, 
+        { time: x(currentPoint), price: minPrice}
+    ]
+    console.log('maxPriceData' + maxPriceData)
 
     const xScale = scaleTime({
         range: [0, width],
@@ -36,7 +51,8 @@ function Chart({ data, parentWidth, parentHeight }) {
     return <div>
         <svg width={width} height={height}>
             <LinearGradient id="area-fill" from="#4682b4" to="#4682b4" fromOpacity={.3} toOpacity={0}></LinearGradient>
-            <MaxPrice data={} yScale={yScale} xScale={xScale} x={x} y={y} label={'label'} yText={0} />
+            <MaxPrice data={maxPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(maxPrice)} yText={yScale(maxPrice)} />
+            <MinPrice data={minPriceData} yScale={yScale} xScale={xScale} x={x} y={y} label={formatPrice(minPrice)} yText={yScale(minPrice)} />
             <AreaClosed data={data} yScale={yScale} xScale={xScale} x={x} y={y} fill="url(#area-fill)" stroke="transparent"/>
             <LinePath data={data} yScale={yScale} xScale={xScale} x={x} y={y} />
         </svg>
