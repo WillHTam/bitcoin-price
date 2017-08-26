@@ -82,7 +82,7 @@ class App extends React.Component {
                 </div>
               </div>
               <p className="disclaimer">
-                {data.disclaimer}
+                {data.disclaimer}   <a href="https://www.coindesk.com/price/">Powered by CoinDesk</a>
               </p>
             </div>
             <style jsx>{`.app,
